@@ -17,6 +17,14 @@ class SearchPlacesViewController: UIViewController {
 	@IBOutlet weak var searchBar: UISearchBar!
 	
 	private var searchPlacesVM = SearchPlacesViewModel()
+	private let spinner: UIActivityIndicatorView = {
+		if #available(iOS 13, *) {
+			return UIActivityIndicatorView(style: .medium)
+		}
+		else {
+			return UIActivityIndicatorView(style: .gray)
+		}
+	}()
 	
 	weak var delegate: SearchPlacesDelegate?
 	private var savedPlaces: [Place] = []
@@ -35,6 +43,10 @@ class SearchPlacesViewController: UIViewController {
 		tableView.delegate = self
 		tableView.dataSource = self
 		
+		spinner.center = view.center
+		spinner.hidesWhenStopped = true
+		view.addSubview(spinner)
+		
 		tableView.register(PlaceCell.nib, forCellReuseIdentifier: PlaceCell.identifier)
 		
 		searchPlacesVM.delegate = self
@@ -52,6 +64,7 @@ extension SearchPlacesViewController: GoogleSearchPlacesDelegate {
 	func searchResultsFound() {
 		DispatchQueue.main.async {
 			self.tableView.reloadData()
+			self.spinner.stopAnimating()
 		}
 	}
 	
@@ -102,6 +115,7 @@ extension SearchPlacesViewController: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		guard let searchText = searchBar.text else { return }
 		searchPlacesVM.searchForPlaces(with: searchText)
+		spinner.startAnimating()
 	}
 }
 
