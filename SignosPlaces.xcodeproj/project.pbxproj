@@ -28,6 +28,8 @@
 		9E938779269A818C00931D5D /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E938777269A818C00931D5D /* PlaceCell.swift */; };
 		9E93877A269A818C00931D5D /* PlaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E938778269A818C00931D5D /* PlaceCell.xib */; };
 		9E93877C269B6E7800931D5D /* SavedPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E93877B269B6E7800931D5D /* SavedPlacesViewController.swift */; };
+		9E93877E269B96A900931D5D /* PlacePhotoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E93877D269B96A900931D5D /* PlacePhotoRequest.swift */; };
+		9E938780269B991200931D5D /* PlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E93877F269B991200931D5D /* PlaceViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,8 @@
 		9E938777269A818C00931D5D /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		9E938778269A818C00931D5D /* PlaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceCell.xib; sourceTree = "<group>"; };
 		9E93877B269B6E7800931D5D /* SavedPlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPlacesViewController.swift; sourceTree = "<group>"; };
+		9E93877D269B96A900931D5D /* PlacePhotoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacePhotoRequest.swift; sourceTree = "<group>"; };
+		9E93877F269B991200931D5D /* PlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +122,7 @@
 				9E93875F269A522000931D5D /* Networking */,
 				9E938753269A428C00931D5D /* Controllers */,
 				9E93875A269A4C2200931D5D /* SearchPlacesViewModel.swift */,
+				9E93877F269B991200931D5D /* PlaceViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -172,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				9E93876E269A582800931D5D /* SearchPlaceRequest.swift */,
+				9E93877D269B96A900931D5D /* PlacePhotoRequest.swift */,
 			);
 			path = RequestModels;
 			sourceTree = "<group>";
@@ -263,6 +269,7 @@
 				9E93876F269A582800931D5D /* SearchPlaceRequest.swift in Sources */,
 				9E938774269A5D1400931D5D /* GoogleAPIKey.swift in Sources */,
 				9E938767269A55D600931D5D /* GooglePlaceAPI.swift in Sources */,
+				9E93877E269B96A900931D5D /* PlacePhotoRequest.swift in Sources */,
 				9E93873D269A3C5800931D5D /* ViewController.swift in Sources */,
 				9E938763269A53D600931D5D /* WebServiceError.swift in Sources */,
 				9E938739269A3C5800931D5D /* AppDelegate.swift in Sources */,
@@ -270,6 +277,7 @@
 				9E938757269A47AA00931D5D /* Place.swift in Sources */,
 				9E938769269A575500931D5D /* ApiRequest.swift in Sources */,
 				9E93876B269A57B900931D5D /* Endpoints.swift in Sources */,
+				9E938780269B991200931D5D /* PlaceViewModel.swift in Sources */,
 				9E93875B269A4C2200931D5D /* SearchPlacesViewModel.swift in Sources */,
 				9E938779269A818C00931D5D /* PlaceCell.swift in Sources */,
 			);

@@ -12,6 +12,12 @@ class SavedPlacesViewController: UIViewController {
 	@IBOutlet weak var segmentedControl: UISegmentedControl!
 	@IBOutlet weak var tableView: UITableView!
 	
+	private var savedPlaceVMs: [PlaceViewModel] = [] {
+		didSet {
+			savedPlaces = savedPlaceVMs.map { $0.getPlace() }
+		}
+	}
+	
 	private var savedPlaces: [Place] = [] {
 		didSet {
 			filteredPlaces = savedPlaces
@@ -30,7 +36,7 @@ class SavedPlacesViewController: UIViewController {
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		guard let searchPlacesVC = segue.destination as? SearchPlacesViewController else { return }
-		searchPlacesVC.savedPlaces = savedPlaces
+		searchPlacesVC.savedPlaceVMs = savedPlaceVMs
 		searchPlacesVC.delegate = self
 	}
 	
@@ -58,8 +64,8 @@ class SavedPlacesViewController: UIViewController {
 }
 
 extension SavedPlacesViewController: SearchPlacesDelegate {
-	func updateSavedPlaces(updatedPlaces: [Place]) {
-		savedPlaces = updatedPlaces
+	func updateSavedPlaceModels(updatedModels: [PlaceViewModel]) {
+		savedPlaceVMs = updatedModels
 		reloadTableView()
 	}
 }
@@ -88,7 +94,7 @@ extension SavedPlacesViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		guard editingStyle == .delete else { return }
 		
-		savedPlaces.remove(at: indexPath.row)
+		savedPlaceVMs.remove(at: indexPath.row)
 		
 		tableView.beginUpdates()
 		tableView.deleteRows(at: [indexPath], with: .fade)

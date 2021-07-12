@@ -7,10 +7,10 @@
 
 import UIKit
 
-class Place {
+struct Place {
 	let name: String
 	let address: String
-	let image: UIImage?
+	var image: UIImage?
 	let phone: String?
 	let types: [PlaceType]
 	let determinedType: PlaceType?
@@ -18,6 +18,7 @@ class Place {
 	let placeId: String
 	var isOpened: Bool = false
 	var isSaved: Bool = false
+	let photoReference: String?
 	
 	init(placeResponse: PlaceResponse) {
 		self.name = placeResponse.name
@@ -28,5 +29,6 @@ class Place {
 		self.image = nil
 		self.phone = nil
 		self.determinedType = types.filter { $0 != .other }.first
+		self.photoReference = placeResponse.photos?.first?.photo_reference
 	}
 }

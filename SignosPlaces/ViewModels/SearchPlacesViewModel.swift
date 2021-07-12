@@ -15,7 +15,8 @@ protocol GoogleSearchPlacesDelegate: AnyObject {
 class SearchPlacesViewModel {
 	
 	weak var delegate: GoogleSearchPlacesDelegate?
-	var places: [Place] = [] {
+	
+	var placeViewModels: [PlaceViewModel] = [] {
 		didSet {
 			delegate?.searchResultsFound()
 		}
@@ -25,7 +26,7 @@ class SearchPlacesViewModel {
 		GooglePlaceAPI.shared.searchGymFoodGroceryPlaces(with: text) { result in
 			switch result {
 				case .success(let responseModel):
-					self.places = responseModel.results.map { Place(placeResponse: $0) }
+					self.placeViewModels = responseModel.results.map { PlaceViewModel(place: Place(placeResponse: $0)) }
 				case .failure(let error):
 					self.delegate?.errorWhileSearching(error: error)
 			}

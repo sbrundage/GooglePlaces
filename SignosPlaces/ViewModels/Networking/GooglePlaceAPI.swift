@@ -24,4 +24,16 @@ class GooglePlaceAPI: NetworkManager {
 			completion(result)
 		}
 	}
+	
+	func getPicture(with photoReference: String, completion: @escaping WebServiceResult<PlacePhotoRequest.ModelType>) {
+		let photoRequest = PlacePhotoRequest(photoReference: photoReference, maxPhotoHeight: 100, maxPhotoWidth: 100)
+		guard let urlRequest = photoRequest.createURLRequest() else {
+			completion(.failure(.invalidURL("Could not create url request for PlacePhotoRequest")))
+			return
+		}
+		
+		performRequestForImage(urlRequest) { result in
+			completion(result)
+		}
+	}
 }

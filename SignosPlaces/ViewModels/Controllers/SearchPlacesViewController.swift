@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SearchPlacesDelegate: AnyObject {
-	func updateSavedPlaces(updatedPlaces: [Place])
+	func updateSavedPlaceModels(updatedModels: [PlaceViewModel])
 }
 
 class SearchPlacesViewController: UIViewController {
@@ -19,7 +19,12 @@ class SearchPlacesViewController: UIViewController {
 	private var searchPlacesVM = SearchPlacesViewModel()
 	
 	weak var delegate: SearchPlacesDelegate?
-	var savedPlaces: [Place] = []
+	private var savedPlaces: [Place] = []
+	var savedPlaceVMs: [PlaceViewModel] = [] {
+		didSet {
+			savedPlaces = savedPlaceVMs.map { $0.getPlace() }
+		}
+	}
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +43,7 @@ class SearchPlacesViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
-		delegate?.updateSavedPlaces(updatedPlaces: savedPlaces)
+		delegate?.updateSavedPlaceModels(updatedModels: savedPlaceVMs)
 	}
 
 }
@@ -57,10 +62,11 @@ extension SearchPlacesViewController: GoogleSearchPlacesDelegate {
 
 extension SearchPlacesViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let placeVM = searchPlacesVM.placeViewModels[indexPath.section]
 		
 		if indexPath.row == 0 {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-			cell.textLabel?.text = searchPlacesVM.places[indexPath.section].address
+			cell.textLabel?.text = placeVM.getPlace().address
 			return cell
 		} else {
 			guard let cell = tableView.dequeueReusableCell(withIdentifier: PlaceCell.identifier, for: indexPath) as? PlaceCell else {
@@ -68,23 +74,24 @@ extension SearchPlacesViewController: UITableViewDataSource {
 				return UITableViewCell()
 			}
 			cell.delegate = self
-			cell.place = searchPlacesVM.places[indexPath.section]
+			cell.initializePlaceCell(with: placeVM)
 			return cell
 		}
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return searchPlacesVM.places.count
+		return searchPlacesVM.placeViewModels.count
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return searchPlacesVM.places[section].isOpened ? 2 : 1
+		let place = searchPlacesVM.placeViewModels[section].getPlace()
+		return place.isOpened ? 2 : 1
 	}
 }
 
 extension SearchPlacesViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		searchPlacesVM.places[indexPath.section].isOpened.toggle()
+		searchPlacesVM.placeViewModels[indexPath.section].toggleIsExpanded()
 		UIView.setAnimationsEnabled(false)
 		let sections = IndexSet.init(integer: indexPath.section)
 		tableView.reloadSections(sections, with: .bottom)
@@ -99,9 +106,9 @@ extension SearchPlacesViewController: UISearchBarDelegate {
 }
 
 extension SearchPlacesViewController: PlaceCellDelegate {
-	func placeAdded(newPlace: Place) {
-		if !savedPlaces.contains(where: { $0.address == newPlace.address }) {
-			savedPlaces.append(newPlace)
+	func placeAdded(newPlaceVM: PlaceViewModel) {
+		if !savedPlaces.contains(where: { $0.address == newPlaceVM.getPlace().address }) {
+			savedPlaceVMs.append(newPlaceVM)
 		}
 	}
 	

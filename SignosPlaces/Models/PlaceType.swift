@@ -11,8 +11,8 @@ enum PlaceType: String {
 	case gym
 	case restaurant
 	case supermarket
-//	case cafe
 	case food
+	//	case cafe
 //	case mealDelivery = "meal_delivery"
 //	case mealTakeaway = "meal_takeaway"
 	case other
