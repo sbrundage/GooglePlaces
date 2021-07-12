@@ -88,3 +88,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# Ignore File Containing API Key
+SignosPlaces/Models/Networking/GoogleAPIKey.swift
