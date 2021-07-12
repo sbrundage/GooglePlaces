@@ -19,6 +19,7 @@ class PlaceViewModel {
 	init(place: Place) {
 		self.place = place
 		getPlaceImage()
+		getMoreDetails()
 	}
 	
 	func getPlace() -> Place { place }
@@ -36,6 +37,17 @@ class PlaceViewModel {
 					}
 				case .failure(let error):
 					print("Error during api call : \(error)")
+			}
+		}
+	}
+	
+	private func getMoreDetails() {
+		GooglePlaceAPI.shared.getPlaceDetails(placeId: place.placeId) { result in
+			switch result {
+				case .success(let responseModel):
+					self.place.phone = responseModel.result.formatted_phone_number
+				case .failure(let error):
+					print("Error during api call: \(error)")
 			}
 		}
 	}

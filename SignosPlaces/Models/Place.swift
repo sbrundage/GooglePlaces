@@ -11,7 +11,7 @@ struct Place {
 	let name: String
 	let address: String
 	var image: UIImage?
-	let phone: String?
+	var phone: String?
 	let types: [PlaceType]
 	let determinedType: PlaceType?
 	let rating: Double

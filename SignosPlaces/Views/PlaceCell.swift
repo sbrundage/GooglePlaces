@@ -45,8 +45,15 @@ class PlaceCell: UITableViewCell {
 	}
 	
 	private func setupCell() {
+		setupTapGestures()
 		updateInfo()
 		updateButton()
+	}
+	
+	private func setupTapGestures() {
+		let phoneLabelTap = UITapGestureRecognizer(target: self, action: #selector(callPhoneNumber(_:)))
+		phoneLabel.isUserInteractionEnabled = true
+		phoneLabel.addGestureRecognizer(phoneLabelTap)
 	}
 	
 	private func updateInfo() {
@@ -56,6 +63,7 @@ class PlaceCell: UITableViewCell {
 		ratingLabel.text = "\(place.rating) / 5"
 		placeImage.image = place.image ?? UIImage(systemName: "square.split.diagonal.2x2")
 		placeTypeLabel.text = place.determinedType?.rawValue
+		phoneLabel.text = place.phone
 	}
 	
 	private func updateButton() {
@@ -71,6 +79,8 @@ class PlaceCell: UITableViewCell {
 		placeImage.layer.cornerRadius = 10
 	}
 	
+	// MARK: - IBActions
+	
 	@IBAction func addButtonClicked(_ sender: Any) {
 		guard let placeVM = viewModel else { return }
 		placeVM.savePlace()
@@ -78,6 +88,15 @@ class PlaceCell: UITableViewCell {
 		delegate?.placeAdded(newPlaceVM: placeVM)
 	}
 	
+	
+	@objc private func callPhoneNumber(_ sender: UITapGestureRecognizer) {
+		guard let number = viewModel?.getPlace().phone else { return }
+		let nonFormattedNumber = number.filter { "0123456789".contains($0) }
+		if let url = URL(string: "tel://\(nonFormattedNumber)"),
+		   UIApplication.shared.canOpenURL(url) {
+			UIApplication.shared.open(url, options: [:], completionHandler: nil)
+		}
+	}
 }
 
 extension PlaceCell: PlaceViewModelDelegate {
