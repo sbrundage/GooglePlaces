@@ -27,12 +27,19 @@ class SavedPlacesViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
+		loadFromUserDefaults()
 
 		navigationController?.navigationBar.topItem?.title = "Saved Places"
 		
 		tableView.delegate = self
 		tableView.dataSource = self
     }
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		updateUserDefaults()
+	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		guard let searchPlacesVC = segue.destination as? SearchPlacesViewController else { return }
@@ -56,6 +63,18 @@ class SavedPlacesViewController: UIViewController {
 		reloadTableView()
 	}
 	
+	private func loadFromUserDefaults() {
+		if let persistedData = UserDefaults.standard.value(forKey: "savedPlacesArray") as? Data {
+			guard let persistedPlaces = try? PropertyListDecoder().decode([Place].self, from: persistedData) else { return }
+			savedPlaces = persistedPlaces
+			savedPlaceVMs = savedPlaces.map { PlaceViewModel(place: $0) }
+		}
+	}
+	
+	private func updateUserDefaults() {
+		UserDefaults.standard.set(try? PropertyListEncoder().encode(savedPlaces), forKey: "savedPlacesArray")
+	}
+	
 	private func reloadTableView() {
 		DispatchQueue.main.async {
 			self.tableView.reloadData()
@@ -66,6 +85,7 @@ class SavedPlacesViewController: UIViewController {
 extension SavedPlacesViewController: SearchPlacesDelegate {
 	func updateSavedPlaceModels(updatedModels: [PlaceViewModel]) {
 		savedPlaceVMs = updatedModels
+		updateUserDefaults()
 		reloadTableView()
 	}
 }

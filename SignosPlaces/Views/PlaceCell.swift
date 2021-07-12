@@ -61,7 +61,7 @@ class PlaceCell: UITableViewCell {
 		placeNameLabel.text = place.name
 		placeAddressLabel.text = place.address
 		ratingLabel.text = "\(place.rating) / 5"
-		placeImage.image = place.image ?? UIImage(systemName: "square.split.diagonal.2x2")
+		placeImage.image = place.getImage() ?? UIImage(systemName: "square.split.diagonal.2x2")
 		placeTypeLabel.text = place.determinedType?.rawValue
 		phoneLabel.text = place.phone
 	}

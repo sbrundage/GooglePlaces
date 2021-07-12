@@ -18,8 +18,12 @@ class PlaceViewModel {
 	
 	init(place: Place) {
 		self.place = place
-		getPlaceImage()
-		getMoreDetails()
+		if place.imageData == nil {
+			getPlaceImage()
+		}
+		if place.phone == nil {
+			getMoreDetails()
+		}
 	}
 	
 	func getPlace() -> Place { place }
@@ -29,12 +33,8 @@ class PlaceViewModel {
 		GooglePlaceAPI.shared.getPicture(with: photoReference) { result in
 			switch result {
 				case .success(let imageData):
-					if let image = UIImage(data: imageData) {
-						self.place.image = image
-						self.delegate?.updateCellInfo()
-					} else {
-						print("Could not create uiimage from image data")
-					}
+					self.place.imageData = imageData
+					self.delegate?.updateCellInfo()
 				case .failure(let error):
 					print("Error during api call : \(error)")
 			}

@@ -7,10 +7,10 @@
 
 import UIKit
 
-struct Place {
+struct Place: Codable {
 	let name: String
 	let address: String
-	var image: UIImage?
+	var imageData: Data?
 	var phone: String?
 	let types: [PlaceType]
 	let determinedType: PlaceType?
@@ -26,9 +26,13 @@ struct Place {
 		self.types = placeResponse.types
 		self.rating = placeResponse.rating
 		self.placeId = placeResponse.place_id
-		self.image = nil
+		self.imageData = nil
 		self.phone = nil
 		self.determinedType = types.filter { $0 != .other }.first
 		self.photoReference = placeResponse.photos?.first?.photo_reference
+	}
+	
+	func getImage() -> UIImage? {
+		imageData != nil ? UIImage(data: imageData!) : nil
 	}
 }
