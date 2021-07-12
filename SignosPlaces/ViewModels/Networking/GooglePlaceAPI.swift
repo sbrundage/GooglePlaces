@@ -36,4 +36,16 @@ class GooglePlaceAPI: NetworkManager {
 			completion(result)
 		}
 	}
+	
+	func getPlaceDetails(placeId: String, completion: @escaping WebServiceResult<PlaceDetailsRequest.ModelType>) {
+		let detailsRequest = PlaceDetailsRequest(placeId: placeId)
+		guard let urlRequest = detailsRequest.createURLRequest() else {
+			completion(.failure(.invalidURL("Could not create url request for PlaceDetailsRequest")))
+			return
+		}
+		
+		performRequestForDecodable(urlRequest) { result in
+			completion(result)
+		}
+	}
 }

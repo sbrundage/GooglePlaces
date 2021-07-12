@@ -35,6 +35,7 @@ class NetworkManager: NetworkingProtocol {
 			do {
 				let responseModel = try JSONDecoder().decode(ResponseModel.self, from: responseData)
 				completion(.success(responseModel))
+				return
 			} catch {
 				completion(.failure(.decodingError(error)))
 			}
