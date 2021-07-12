@@ -34,6 +34,8 @@ class SavedPlacesViewController: UIViewController {
 		
 		tableView.delegate = self
 		tableView.dataSource = self
+		
+		tableView.register(SavedPlaceCell.nib, forCellReuseIdentifier: SavedPlaceCell.identifier)
     }
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -96,8 +98,8 @@ extension SavedPlacesViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { filteredPlaces.count }
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-		cell.textLabel?.text = filteredPlaces[indexPath.row].name
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: SavedPlaceCell.identifier, for: indexPath) as? SavedPlaceCell else { return UITableViewCell() }
+		cell.place = savedPlaces[indexPath.row]
 		return cell
 	}
 	
